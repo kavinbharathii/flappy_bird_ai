@@ -1,6 +1,16 @@
 import pygame
 import random
 from settings import *
+from math import exp
+
+
+def ReLU(x):
+    return [max(i, 0) for i in x]
+
+def softmax(x: list[int | float]) -> list[float]:
+    denominator = sum([exp(i) for i in x])
+    return [exp(i)/denominator for i in x]
+
 
 class Bird:
     def __init__(self, x, y, vel, img):
@@ -23,6 +33,7 @@ class Bird:
         self.generation = -1
         self.age = 0
         self.visual_inputs = []
+        self.bias = random.random(-1, 1)
 
     def draw(self, win):
         blitRotateCenter(win, self.img, (self.x, self.y), self.tilt)
@@ -61,7 +72,7 @@ class Bird:
 
     def create_genes(self):
         for _ in range(self.gene_length):
-            random_gene = random.uniform(0, 1)
+            random_gene = random.uniform(-1, 1)
             self.gene.append(random_gene)
 
     def calc_fitness(self):
@@ -78,6 +89,7 @@ class Bird:
             else:
                 child.gene.append(partner.gene[i])
 
+        child.bias = (self.bias + partner.bias) / 2
         return child
 
     def mutate(self):
@@ -100,8 +112,9 @@ class Bird:
         pygame.draw.line(win, (255, 0, 0), (self.x, self.y), (self.x, (-1 - self.visual_inputs[3]) * D_HEIGHT), 5)
 
     def think(self):
-        out = 0
+        output = 0
         for i in range(self.gene_length):
-            out += self.gene[i] * self.visual_inputs[i]
+            output += self.gene[i] * self.visual_inputs[i]
 
-        return out
+        output += self.bias
+        return output 
