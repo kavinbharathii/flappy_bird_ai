@@ -1,15 +1,13 @@
 import pygame
+import numpy as np
 import random
 from settings import *
-from math import exp
+from NeuralNetwork import FCLayer, Network, ActivationLayer, intertwine
+from activation_funcs import sigmoid, tanh
 
 
-def ReLU(x):
-    return [max(i, 0) for i in x]
-
-def softmax(x: list[int | float]) -> list[float]:
-    denominator = sum([exp(i) for i in x])
-    return [exp(i)/denominator for i in x]
+def mapn(value, act_lower, act_upper, to_lower, to_upper):
+    return to_lower + (to_upper - to_lower) * ((value - act_lower) / (act_upper - act_lower))
 
 
 class Bird:
@@ -26,14 +24,16 @@ class Bird:
         self.tilt = 0
         self.max_rotation = 25
         self.rotation_velocity = 3
-        self.gene_length = GENE_LENGTH
-        self.gene = []
         self.fitness = -1
         self.dead = False
         self.generation = -1
         self.age = 0
         self.visual_inputs = []
-        self.bias = random.random(-1, 1)
+        self.INPUT_SIZE = 4
+        self.HIDDEN_LAYER = 3
+        self.OUTPUT_SIZE = 1
+
+        self.create_genes()
 
     def draw(self, win):
         blitRotateCenter(win, self.img, (self.x, self.y), self.tilt)
@@ -71,9 +71,11 @@ class Bird:
         return pygame.mask.from_surface(self.img)
 
     def create_genes(self):
-        for _ in range(self.gene_length):
-            random_gene = random.uniform(-1, 1)
-            self.gene.append(random_gene)
+        self.nn = Network()
+        self.nn.add(FCLayer(self.INPUT_SIZE, self.HIDDEN_LAYER))
+        self.nn.add(ActivationLayer(sigmoid))
+        self.nn.add(FCLayer(self.HIDDEN_LAYER, self.OUTPUT_SIZE))
+        self.nn.add(ActivationLayer(tanh))
 
     def calc_fitness(self):
         # using a fitness function to find the fitness of
@@ -83,38 +85,46 @@ class Bird:
 
     def crossover(self, partner):
         child = Bird(30, D_HEIGHT // 2, 0, BIRD_IMG)
-        for i in range(self.gene_length):
-            if i % 2 == 0:
-                child.gene.append(self.gene[i])
-            else:
-                child.gene.append(partner.gene[i])
+        child.nn = intertwine(self.nn, partner.nn)
+        return child 
 
-        child.bias = (self.bias + partner.bias) / 2
-        return child
-
-    def mutate(self):
-        for i in range(GENE_LENGTH):
-            mutation_probability = round(random.uniform(0, 1), 2)
-            if mutation_probability == MUTATION_RATE:
-                mutated_gene = random.uniform(-0.005, 0.005)
-                self.gene[i] += mutated_gene
+    # def mutate(self):
+    #     for i in range(GENE_LENGTH):
+    #         mutation_probability = round(random.uniform(0, 1), 2)
+    #         if mutation_probability == MUTATION_RATE:
+    #             mutated_gene = random.uniform(-0.005, 0.005)
+    #             self.gene[i] += mutated_gene
 
     def look(self, pipe):
         self.visual_inputs = []
-        self.visual_inputs.append(1 - (self.y / D_HEIGHT))
-        self.visual_inputs.append(self.vel / self.terminal_vel)
-        self.visual_inputs.append(1 - (pipe.x / D_WIDTH))
-        self.visual_inputs.append(1 - (pipe.height / D_HEIGHT))
 
-    def debug(self, win):
+        # horizontal distance from pipe
+        horizontal_distance = pipe.x - self.x
+        mapped_hd = mapn(horizontal_distance, 0, D_WIDTH, 0, 1)
+        
+        # bird's velocity
+        velocity = self.vel / self.terminal_vel
+    
+        # vertical distance from top pipe
+        top_pipe_height = pipe.height - 150
+        mapped_tph = mapn(top_pipe_height, 0, D_HEIGHT, 0, 1)
+        
+        # vertical distance from bottom pipe
+        bottom_pipe_height = pipe.height
+        mapped_bph = mapn(bottom_pipe_height, 0, D_HEIGHT, 0, 1)
+
+        self.visual_inputs.append(mapped_hd)
+        self.visual_inputs.append(velocity)
+        self.visual_inputs.append(mapped_tph)
+        self.visual_inputs.append(mapped_bph)
+
+    def debug(self, win, pipe):
         # pygame.draw.line(win, (255, 0, 0), (self.x, self.y), ((1 - self.visual_inputs[2]) * D_WIDTH, self.visual_inputs[3] * D_HEIGHT), 5)
-        pygame.draw.line(win, (255, 0, 0), (self.x, self.y), ((-1 - self.visual_inputs[2]) * D_WIDTH, self.y), 5)
-        pygame.draw.line(win, (255, 0, 0), (self.x, self.y), (self.x, (-1 - self.visual_inputs[3]) * D_HEIGHT), 5)
+        pygame.draw.line(win, (255, 0, 0), (self.x, self.y), (pipe.x, self.y), 5)
+        pygame.draw.line(win, (255, 0, 0), (self.x, self.y), (pipe.x, pipe.height - 150), 5)
+        pygame.draw.line(win, (255, 0, 0), (self.x, self.y), (pipe.x, pipe.height), 5)
 
     def think(self):
-        output = 0
-        for i in range(self.gene_length):
-            output += self.gene[i] * self.visual_inputs[i]
-
-        output += self.bias
-        return output 
+        self.visual_inputs = np.array(self.visual_inputs)
+        decision = self.nn.predict([self.visual_inputs])
+        return decision[0][0]

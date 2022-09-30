@@ -3,7 +3,7 @@ import random
 from settings import D_WIDTH
 
 class Pipe:
-    def __init__(self, img, x = D_WIDTH):
+    def __init__(self, img, x = D_WIDTH - 200):
         self.x = x
         self.vel = 3
         self.img = img
@@ -27,6 +27,7 @@ class Pipe:
     def draw(self, win):
         win.blit(self.top_pipe, (self.x, self.height - self.pipe_height - self.gap_height))
         win.blit(self.bottom_pipe, (self.x, self.height))
+        pygame.draw.circle(win, (225, 0, 0), (self.x, self.height), 10)
 
     def has_passed_screen(self):
         return self.x + self.pipe_width < 0

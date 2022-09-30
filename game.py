@@ -41,7 +41,7 @@ class Game:
                 bird.fitness = bird.calc_fitness()
                 chance_to_flap = bird.think()
                 
-                if chance_to_flap >= 0.5:
+                if chance_to_flap >= 0:
                     bird.flap()
                 else:
                     bird.vel = 3
@@ -93,7 +93,7 @@ class Game:
         for bird in self.birds.population:
             if not bird.dead:
                 bird.draw(win)
-                bird.debug(win)                
+                bird.debug(win, self.pipes[0])                
 
         win.blit(score_text, (10, 10))
         win.blit(fps_text, (150, 10))

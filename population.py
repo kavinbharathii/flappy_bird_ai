@@ -35,7 +35,6 @@ class Population(object):
                 father_genome = random.choice(mating_pool)
                 mother_genome = random.choice(mating_pool)
                 child_genome = father_genome.crossover(mother_genome)
-                child_genome.mutate()
                 child_genome.generation = self.generation
                 children.population.append(child_genome)
 
