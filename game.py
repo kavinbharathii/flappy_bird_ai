@@ -7,7 +7,6 @@ from settings import *
 
 class Game:
     def __init__(self):
-        # self.bird  = Bird(30, D_HEIGHT // 2, 0, BIRD_IMG)
         self.birds = Population()
         self.birds.populate()
         self.pipes = [Pipe(PIPE_IMG)]
@@ -47,10 +46,16 @@ class Game:
                     bird.vel = 3
 
                 if bird.y >= self.bases[0].y:
+                    bird.age -= 500
+                    bird.dead = True
+
+                if bird.y < 0:
+                    bird.age -= 500
                     bird.dead = True
 
                 for pipe in self.pipes:
                     if pipe.detect_collision(bird):
+                        bird.age -= 100
                         bird.dead = True
 
             add_pipe = False
@@ -68,14 +73,17 @@ class Game:
             for pipe in passed_pipes:
                 self.pipes.remove(pipe)
                 self.score += 1
+                for bird in self.birds.population:
+                    if not bird.dead:
+                        bird.age += 1000
 
             self.draw_window(display, fps)
 
     def draw_window(self, win, fps):
-        score_text = ARCADE_FONT.render("Score : " + str(self.score), 1, (255, 255, 255))
-        fps_text = ARCADE_FONT.render("fps : " + str(fps), 1, (255, 255, 255))
-        gen_text = ARCADE_FONT.render("gen : " + str(self.birds.generation), 1, (255, 255, 255))
-        alive_text = ARCADE_FONT.render("alive : " + str(len([i for i in self.birds.population if not i.dead])), 1, (255, 255, 255))
+        score_text = ARCADE_FONT.render("Score " + str(self.score), 1, (255, 255, 255))
+        fps_text = ARCADE_FONT.render("fps " + str(fps), 1, (255, 255, 255))
+        gen_text = ARCADE_FONT.render("gen " + str(self.birds.generation), 1, (255, 255, 255))
+        alive_text = ARCADE_FONT.render("alive " + str(len([i for i in self.birds.population if not i.dead])), 1, (255, 255, 255))
         win.blit(BG_IMG, (0, 0))
 
         for pipe in self.pipes:
@@ -93,7 +101,7 @@ class Game:
         for bird in self.birds.population:
             if not bird.dead:
                 bird.draw(win)
-                bird.debug(win, self.pipes[0])                
+                # bird.debug(win, self.pipes[0])                
 
         win.blit(score_text, (10, 10))
         win.blit(fps_text, (150, 10))

@@ -3,14 +3,14 @@ import random
 from settings import D_WIDTH
 
 class Pipe:
-    def __init__(self, img, x = D_WIDTH - 200):
+    def __init__(self, img, x = D_WIDTH):
         self.x = x
         self.vel = 3
         self.img = img
         self.top_pipe = pygame.transform.flip(self.img, False, True)
         self.bottom_pipe = self.img
         self.height = self.set_height()
-        self.gap_height = 150
+        self.gap_height = 200
         self.pipe_height = self.bottom_pipe.get_height()
         self.pipe_width = self.bottom_pipe.get_width()
         self.top_height = self.height - self.top_pipe.get_height() - self.gap_height
@@ -27,14 +27,12 @@ class Pipe:
     def draw(self, win):
         win.blit(self.top_pipe, (self.x, self.height - self.pipe_height - self.gap_height))
         win.blit(self.bottom_pipe, (self.x, self.height))
-        pygame.draw.circle(win, (225, 0, 0), (self.x, self.height), 10)
 
     def has_passed_screen(self):
         return self.x + self.pipe_width < 0
 
     def detect_collision(self, bird):
         bird_mask = bird.get_mask()
-        
         
         top_mask = pygame.mask.from_surface(self.top_pipe)
         bottom_mask = pygame.mask.from_surface(self.bottom_pipe)

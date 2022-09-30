@@ -18,7 +18,7 @@ class Population(object):
     def natural_selection(self):
         mating_pool = []
         for genome in self.population:
-            fitness_ratio = math.floor(max(genome.fitness, 0) * 100)
+            fitness_ratio = math.floor(max(genome.fitness, 0) * 10)
             for _ in range(fitness_ratio):
                 mating_pool.append(genome)
 

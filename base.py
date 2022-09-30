@@ -4,10 +4,10 @@ class Base:
         self.x = x
         self.y = y
         self.img = img
-        self.velocity = 0.5
+        self.vel = 3
 
     def move(self):
-        self.x -= self.velocity
+        self.x -= self.vel
 
     def draw(self, win):
         win.blit(self.img, (self.x, self.y))

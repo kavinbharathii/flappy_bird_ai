@@ -19,6 +19,7 @@ class Bird:
         self.acc = 0.005
         self.tick_count = 0
         self.jump_vel = -3
+        self.flapping = False
         self.terminal_vel = 7
         self.height = self.y
         self.tilt = 0
@@ -39,8 +40,10 @@ class Bird:
         blitRotateCenter(win, self.img, (self.x, self.y), self.tilt)
 
     def flap(self):
-        self.vel = self.jump_vel
-        self.tick_count = 0
+        if not self.flapping:
+            self.vel = self.jump_vel
+            self.tick_count = 0
+            self.flapping = True
 
     def move(self):
         self.tick_count += 1
@@ -57,6 +60,10 @@ class Bird:
 
         # changing the bird's position w.r.t velocity
         self.y += self.vel
+
+        # checking if the bird is flapping by checking the terminal velocity
+        if self.vel > 0:
+            self.flapping = False
 
         # tilt up
         if self.vel < 0:  
@@ -106,7 +113,7 @@ class Bird:
         velocity = self.vel / self.terminal_vel
     
         # vertical distance from top pipe
-        top_pipe_height = pipe.height - 150
+        top_pipe_height = pipe.height - 200
         mapped_tph = mapn(top_pipe_height, 0, D_HEIGHT, 0, 1)
         
         # vertical distance from bottom pipe
@@ -119,9 +126,8 @@ class Bird:
         self.visual_inputs.append(mapped_bph)
 
     def debug(self, win, pipe):
-        # pygame.draw.line(win, (255, 0, 0), (self.x, self.y), ((1 - self.visual_inputs[2]) * D_WIDTH, self.visual_inputs[3] * D_HEIGHT), 5)
         pygame.draw.line(win, (255, 0, 0), (self.x, self.y), (pipe.x, self.y), 5)
-        pygame.draw.line(win, (255, 0, 0), (self.x, self.y), (pipe.x, pipe.height - 150), 5)
+        pygame.draw.line(win, (255, 0, 0), (self.x, self.y), (pipe.x, pipe.height - 200), 5)
         pygame.draw.line(win, (255, 0, 0), (self.x, self.y), (pipe.x, pipe.height), 5)
 
     def think(self):
