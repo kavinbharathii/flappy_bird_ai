@@ -34,8 +34,6 @@ class Bird:
         self.HIDDEN_LAYER = 3
         self.OUTPUT_SIZE = 1
 
-        self.create_genes()
-
     def draw(self, win):
         blitRotateCenter(win, self.img, (self.x, self.y), self.tilt)
 

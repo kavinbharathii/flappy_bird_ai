@@ -22,7 +22,6 @@ class Population(object):
             for _ in range(fitness_ratio):
                 mating_pool.append(genome)
 
-        # print(f"Size of mating pool: {len(mating_pool)}")
         return mating_pool
 
     def breed(self):

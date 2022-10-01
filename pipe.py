@@ -31,6 +31,9 @@ class Pipe:
     def has_passed_screen(self):
         return self.x + self.pipe_width < 0
 
+    def has_passed_player(self):
+        return self.x + self.pipe_width < 100
+
     def detect_collision(self, bird):
         bird_mask = bird.get_mask()
         

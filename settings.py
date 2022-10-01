@@ -12,7 +12,7 @@ PIPE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join('assets', 'pi
 BASE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join('assets', 'base.png'))).convert_alpha()
 BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join('assets', 'bg - dark.png'))).convert_alpha()
 ARCADE_FONT = pygame.font.Font(os.path.join('assets', 'ARCADECLASSIC.TTF'), 24)
-POPULATION_SIZE = 20
+POPULATION_SIZE = 10
 GENE_LENGTH = 4
 MUTATION_RATE = 0.02
 

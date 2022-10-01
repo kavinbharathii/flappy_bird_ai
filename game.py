@@ -46,11 +46,11 @@ class Game:
                     bird.vel = 3
 
                 if bird.y >= self.bases[0].y:
-                    bird.age -= 500
+                    bird.age -= 100
                     bird.dead = True
 
                 if bird.y < 0:
-                    bird.age -= 500
+                    bird.age -= 100
                     bird.dead = True
 
                 for pipe in self.pipes:
@@ -110,8 +110,6 @@ class Game:
         pygame.display.flip()
 
     def reset(self):
-        # self.birds = Population()
-        # self.birds.populate()
         self.pipes = [Pipe(PIPE_IMG)]
         self.bases = [Base(0, D_HEIGHT - 100, BASE_IMG), Base(D_WIDTH, D_HEIGHT - 100, BASE_IMG)]
         self.score = 0
