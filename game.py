@@ -1,4 +1,5 @@
 import pygame
+from NeuralNetwork import FCLayer
 from bird import Bird
 from pipe import Pipe
 from base import Base
@@ -14,6 +15,7 @@ class Game:
         self.score = 0
         self.clock = pygame.time.Clock()
         self.frame_rate = 60
+        self.count = 0
 
     def run(self):
         loop = True
@@ -31,7 +33,23 @@ class Game:
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
-                        print(self.birds.display_best_gene())
+                        best_bird = self.birds.population[0]
+
+                        for bird in self.birds.population:
+                            if bird.fitness > best_bird.fitness:
+                                best_bird = bird
+
+                    for index, layer in enumerate(best_bird.nn.layers):
+                        print(f"Layer: {index}")
+                        if type(layer) == FCLayer:
+                            print(layer.weights)
+                            print(layer.bias)                    
+                        else:
+                            print(layer.activation_function)
+
+                    if event.key == pygame.K_q:
+                        loop = False
+                        exit()
 
             for bird in self.birds.population:
                 bird.move()
@@ -40,10 +58,10 @@ class Game:
                 bird.fitness = bird.calc_fitness()
                 chance_to_flap = bird.think()
                 
-                if chance_to_flap >= 0:
+                if chance_to_flap == 0:
                     bird.flap()
                 else:
-                    bird.vel = 3
+                    pass
 
                 if bird.y >= self.bases[0].y:
                     bird.age -= 100
@@ -63,16 +81,18 @@ class Game:
             
             for pipe in self.pipes:
                 pipe.move()
-                if pipe.has_passed_screen():
+                if pipe.has_passed_player():
                     add_pipe = True
                     passed_pipes.append(pipe)
 
             if add_pipe:
                 self.pipes.append(Pipe(PIPE_IMG))
+                add_pipe = False
 
             for pipe in passed_pipes:
-                self.pipes.remove(pipe)
                 self.score += 1
+                self.pipes.remove(pipe)
+
                 for bird in self.birds.population:
                     if not bird.dead:
                         bird.age += 1000

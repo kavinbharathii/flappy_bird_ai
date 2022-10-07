@@ -32,7 +32,7 @@ class Bird:
         self.visual_inputs = []
         self.INPUT_SIZE = 4
         self.HIDDEN_LAYER = 3
-        self.OUTPUT_SIZE = 1
+        self.OUTPUT_SIZE = 2
 
     def draw(self, win):
         blitRotateCenter(win, self.img, (self.x, self.y), self.tilt)
@@ -54,7 +54,8 @@ class Bird:
 
         # terminal velocity
         if self.vel >= self.terminal_vel:
-            self.vel = (self.vel/abs(self.vel)) * self.terminal_vel
+            # self.vel = (self.vel/abs(self.vel)) * self.terminal_vel
+            self.vel = self.terminal_vel
 
         # changing the bird's position w.r.t velocity
         self.y += self.vel
@@ -131,4 +132,8 @@ class Bird:
     def think(self):
         self.visual_inputs = np.array(self.visual_inputs)
         decision = self.nn.predict([self.visual_inputs])
-        return decision[0][0]
+        
+        if decision[0][0] > decision[0][1]:
+            return 0
+        else:
+            return 1
