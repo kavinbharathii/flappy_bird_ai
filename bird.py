@@ -60,7 +60,7 @@ class Bird:
         # changing the bird's position w.r.t velocity
         self.y += self.vel
 
-        # checking if the bird is flapping by checking the terminal velocity
+        # checking if the bird is flapping by checking the bird's velocity
         if self.vel > 0:
             self.flapping = False
 
