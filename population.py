@@ -30,10 +30,16 @@ class Population(object):
             mating_pool = self.natural_selection()
             children = Population()
 
+            # for _ in range(POPULATION_SIZE):
+            #     father_genome = random.choice(mating_pool)
+            #     mother_genome = random.choice(mating_pool)
+            #     child_genome = father_genome.crossover(mother_genome)
+            #     child_genome.generation = self.generation
+            #     children.population.append(child_genome)
+
             for _ in range(POPULATION_SIZE):
-                father_genome = random.choice(mating_pool)
-                mother_genome = random.choice(mating_pool)
-                child_genome = father_genome.crossover(mother_genome)
+                selected_genome = random.choice(mating_pool)
+                child_genome = selected_genome.evolve_genome()
                 child_genome.generation = self.generation
                 children.population.append(child_genome)
 

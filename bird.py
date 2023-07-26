@@ -2,7 +2,7 @@ import pygame
 import numpy as np
 import random
 from settings import *
-from NeuralNetwork import FCLayer, Network, ActivationLayer, intertwine
+from NeuralNetwork import FCLayer, Network, ActivationLayer, intertwine, evolve
 from activation_funcs import sigmoid, tanh
 
 
@@ -31,7 +31,7 @@ class Bird:
         self.age = 0
         self.visual_inputs = []
         self.INPUT_SIZE = 4
-        self.HIDDEN_LAYER = 3
+        self.HIDDEN_LAYER = 5
         self.OUTPUT_SIZE = 2
 
     def draw(self, win):
@@ -94,12 +94,10 @@ class Bird:
         child.nn = intertwine(self.nn, partner.nn)
         return child 
 
-    # def mutate(self):
-    #     for i in range(GENE_LENGTH):
-    #         mutation_probability = round(random.uniform(0, 1), 2)
-    #         if mutation_probability == MUTATION_RATE:
-    #             mutated_gene = random.uniform(-0.005, 0.005)
-    #             self.gene[i] += mutated_gene
+    def evolve_genome(self):
+        child = Bird(30, D_HEIGHT // 2, 0, BIRD_IMG)
+        child.nn = evolve(self.nn)
+        return child
 
     def look(self, pipe):
         self.visual_inputs = []

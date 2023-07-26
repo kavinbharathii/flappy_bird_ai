@@ -65,17 +65,17 @@ class Game:
 
                 # checking if the bird has crashed
                 if bird.y >= self.bases[0].y:
-                    bird.age -= 100
+                    # bird.age -= 100
                     bird.dead = True
 
                 # checking if the bird is out of the world (literally)
                 if bird.y < 0:
-                    bird.age -= 100
+                    # bird.age -= 100
                     bird.dead = True
 
                 for pipe in self.pipes:
                     if pipe.detect_collision(bird):
-                        bird.age -= 100
+                        # bird.age -= 100
                         bird.dead = True
 
             add_pipe = False
@@ -123,7 +123,7 @@ class Game:
         for bird in self.birds.population:
             if not bird.dead:
                 bird.draw(win)
-                # bird.debug(win, self.pipes[0])                
+                bird.debug(win, self.pipes[0])                
 
         win.blit(score_text, (10, 10))
         win.blit(fps_text, (150, 10))

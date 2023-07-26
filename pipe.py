@@ -19,6 +19,7 @@ class Pipe:
 
     def set_height(self):
         height = random.randint(175, 625)
+        # height = 600
         return height
 
     def move(self):

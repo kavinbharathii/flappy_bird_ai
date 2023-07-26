@@ -15,6 +15,8 @@ ARCADE_FONT = pygame.font.Font(os.path.join('assets', 'ARCADECLASSIC.TTF'), 24)
 POPULATION_SIZE = 10
 GENE_LENGTH = 4
 MUTATION_RATE = 0.02
+MUTATION_RANGE_LOW = -0.3
+MUTATION_RANGE_HIGH = 0.3
 
 
 pygame.display.set_caption('Flappy bird')
