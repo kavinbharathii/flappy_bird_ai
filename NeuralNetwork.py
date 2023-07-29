@@ -1,4 +1,4 @@
-from random import uniform as r_uniform
+import random
 import numpy as np
 from activation_funcs import sigmoid, tanh
 from settings import MUTATION_RANGE_LOW, MUTATION_RANGE_HIGH
@@ -59,7 +59,7 @@ def intertwine(father, mother):
                 else:
                     out.weights[num_nodes] = mother.layers[layer].weights[num_nodes]
 
-            if r_uniform(-1, 1) > 0:
+            if random.uniform(-1, 1) > 0:
                 out.bias = father.layers[layer].bias
             else:
                 out.bias = mother.layers[layer].bias 
@@ -72,7 +72,11 @@ def intertwine(father, mother):
 
     return child
 
-def evolve(genome):
+
+# Slighlty mutate the weights with smalls tweaks
+
+# new weights = old weights + (small range of values)
+def evolve(genome: Network):
     evolved_genome = Network()
     
     for layer_index in range(len(genome.layers)):
@@ -98,52 +102,28 @@ def evolve(genome):
     return evolved_genome
 
 
-# [T E S T I N G]
-# father = Network()
-# father.add(FCLayer(2, 3))
-# father.add(ActivationLayer(tanh))
-# father.add(FCLayer(3, 1))
-# father.add(ActivationLayer(tanh))
-# for l in father.layers:
-#     if type(l) == FCLayer: 
-#         print(l.weights)
+# aggressive mutation completely changes the weights of the layer
+# it produces more variety in the population
 
-# print()
+def aggressive_mutation(genome: Network):
+    evolved_genome = Network()
+    
+    for layer_index in range(len(genome.layers)):
 
-# mother = Network()
-# mother.add(FCLayer(2, 3))
-# mother.add(ActivationLayer(tanh))
-# mother.add(FCLayer(3, 1))
-# mother.add(ActivationLayer(tanh))
-# for l in mother.layers:
-#     if type(l) == FCLayer: 
-#         print(l.weights)
+        # If it's a FCLayer
+        if type(genome_layer := genome.layers[layer_index]) == FCLayer:
 
-# print()
+            number_of_weight_rows = len(genome_layer.weights)
+            number_of_weight_cols = len(genome_layer.weights[0])
+            
+            new_weights = np.random.rand(number_of_weight_rows, number_of_weight_cols) - 0.5
+            
+            evolved_layer = FCLayer(1, 1)
+            evolved_layer.weights = new_weights
+            evolved_genome.add(evolved_layer)
 
-# child = intertwine(father, mother)
-# for l in child.layers:
-#     if type(l) == FCLayer: 
-#         print(l.weights)
+        # If it's an activation layer
+        else:
+            evolved_genome.add(genome.layers[layer_index])
 
-# print()
-
-# print("STATS")
-# for i in range(len(child.layers)):
-#     if type(child.layers[i]) == FCLayer:
-#         print(f"Layer {i}")
-#         print(child.layers[i].weights == father.layers[i].weights)
-#         print(child.layers[i].weights == mother.layers[i].weights)
-#         print()
-
-
-# w = np.array([[1, 0]])
-# print(father.predict(w))
-# print(mother.predict(w))
-# print(child.predict(w))
-
-# offspring = evolve(father)
-# print(type(offspring))
-# for layer in offspring.layers:
-#     if type(layer) == FCLayer:
-#         print(layer.weights)
+    return evolved_genome

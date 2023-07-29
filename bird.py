@@ -2,7 +2,7 @@ import pygame
 import numpy as np
 import random
 from settings import *
-from NeuralNetwork import FCLayer, Network, ActivationLayer, intertwine, evolve
+from NeuralNetwork import FCLayer, Network, ActivationLayer, intertwine, evolve, aggressive_mutation
 from activation_funcs import sigmoid, tanh
 
 
@@ -96,7 +96,14 @@ class Bird:
 
     def evolve_genome(self):
         child = Bird(30, D_HEIGHT // 2, 0, BIRD_IMG)
-        child.nn = evolve(self.nn)
+        chance_of_aggressive_mutation = random.random()
+
+        if chance_of_aggressive_mutation <= AGGRESSIVE_MUTATION_CHANCE:
+            child.nn = aggressive_mutation(self.nn)
+            print("Aggressive mutation")
+        else:
+            child.nn = evolve(self.nn)
+
         return child
 
     def look(self, pipe):
