@@ -139,7 +139,7 @@ By selecting the best bunch from each episode and breeding + evolving them, a op
 
 # References:
 
-Genetic Algorithm Wiki: https://en.wikipedia.org/wiki/Genetic_algorithm
-Neural Network Wiki: https://en.wikipedia.org/wiki/Neural_network
-Kavin's article on Genetic Algorithm: https://dev.to/kavinbharathi/genetic-algorithm-in-action-3ilj
-GitHub Repo for the Project: https://github.com/kavinbharathii/flappy_bird_ai
+Genetic Algorithm Wiki: https://en.wikipedia.org/wiki/Genetic_algorithm 
+Neural Network Wiki: https://en.wikipedia.org/wiki/Neural_network 
+Kavin's article on Genetic Algorithm: https://dev.to/kavinbharathi/genetic-algorithm-in-action-3ilj 
+GitHub Repo for the Project: https://github.com/kavinbharathii/flappy_bird_ai 
