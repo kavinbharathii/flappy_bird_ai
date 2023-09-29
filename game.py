@@ -59,9 +59,9 @@ class Game:
                 chance_to_flap = bird.think()
                 
                 if chance_to_flap == 0:
-                    bird.flap()
-                else:
                     pass
+                else:
+                    bird.flap()
 
                 # checking if the bird has crashed
                 if bird.y >= self.bases[0].y:
@@ -117,7 +117,7 @@ class Game:
 
         for base in self.bases:
             if base.x <= 0 - BG_IMG.get_width():
-                self.bases.append(Base(D_WIDTH, D_HEIGHT - 100, BASE_IMG))
+                self.bases.append(Base(D_WIDTH, D_HEIGHT - BASE_HEIGHT, BASE_IMG))
                 self.bases.remove(base)
 
         for bird in self.birds.population:

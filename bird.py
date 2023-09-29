@@ -117,12 +117,12 @@ class Bird:
         velocity = self.vel / self.terminal_vel
     
         # vertical distance from top pipe
-        top_pipe_height = pipe.height - 200
-        mapped_tph = mapn(top_pipe_height, 0, D_HEIGHT, 0, 1)
+        top_pipe_height = pipe.height - GAP_HEIGHT
+        mapped_tph = mapn(top_pipe_height, 0, D_HEIGHT - BASE_HEIGHT - GAP_HEIGHT, 0, 1)
         
         # vertical distance from bottom pipe
         bottom_pipe_height = pipe.height
-        mapped_bph = mapn(bottom_pipe_height, 0, D_HEIGHT, 0, 1)
+        mapped_bph = mapn(bottom_pipe_height, GAP_HEIGHT, D_HEIGHT - BASE_HEIGHT, 0, 1)
 
         self.visual_inputs.append(mapped_hd)
         self.visual_inputs.append(velocity)
@@ -130,9 +130,9 @@ class Bird:
         self.visual_inputs.append(mapped_bph)
 
     def debug(self, win, pipe):
-        pygame.draw.line(win, (255, 0, 0), (self.x, self.y), (pipe.x, self.y), 5)
-        pygame.draw.line(win, (255, 0, 0), (self.x, self.y), (pipe.x, pipe.height - 200), 5)
-        pygame.draw.line(win, (255, 0, 0), (self.x, self.y), (pipe.x, pipe.height), 5)
+        pygame.draw.line(win,  (191, 97, 106), (self.x, self.y), (pipe.x, self.y), 5)
+        pygame.draw.line(win, (163, 190, 140), (self.x, self.y), (pipe.x, pipe.height - 200), 5)
+        pygame.draw.line(win, (129, 161, 193), (self.x, self.y), (pipe.x, pipe.height), 5)
 
     def think(self):
         self.visual_inputs = np.array(self.visual_inputs)

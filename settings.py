@@ -6,6 +6,8 @@ import os
 
 D_WIDTH = 500
 D_HEIGHT = 800
+BASE_HEIGHT = 100
+GAP_HEIGHT = 200
 display = pygame.display.set_mode((D_WIDTH, D_HEIGHT))
 
 # Assets
@@ -16,7 +18,7 @@ BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join('assets', 'bg -
 ARCADE_FONT = pygame.font.Font(os.path.join('assets', 'ARCADECLASSIC.TTF'), 24)
 
 # Algorithm configurations
-POPULATION_SIZE = 15                # Size of the population
+POPULATION_SIZE = 10                # Size of the population
 GENE_LENGTH = 4                     # length of the gene information
 MUTATION_RATE = 0.02                # rate of mutation chances
 MUTATION_RANGE_LOW = -0.4           # Lowest possible mutation weight value

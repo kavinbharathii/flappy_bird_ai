@@ -90,7 +90,8 @@ def evolve(genome: Network):
                 size = (number_of_weight_rows, number_of_weight_cols),
                 low = MUTATION_RANGE_LOW,
                 high = MUTATION_RANGE_HIGH)
-            
+
+            # initializing a placeholder FCLayer
             evolved_layer = FCLayer(1, 1)
             evolved_layer.weights = genome_layer.weights + weight_tweaks
             evolved_genome.add(evolved_layer)
@@ -118,6 +119,7 @@ def aggressive_mutation(genome: Network):
             
             new_weights = np.random.rand(number_of_weight_rows, number_of_weight_cols) - 0.5
             
+            # initializing a placeholder FCLayer
             evolved_layer = FCLayer(1, 1)
             evolved_layer.weights = new_weights
             evolved_genome.add(evolved_layer)
@@ -127,3 +129,4 @@ def aggressive_mutation(genome: Network):
             evolved_genome.add(genome.layers[layer_index])
 
     return evolved_genome
+

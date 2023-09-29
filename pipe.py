@@ -1,6 +1,6 @@
 import pygame
 import random
-from settings import D_WIDTH
+from settings import D_WIDTH, GAP_HEIGHT
 
 class Pipe:
     def __init__(self, img, x = D_WIDTH):
@@ -10,7 +10,7 @@ class Pipe:
         self.top_pipe = pygame.transform.flip(self.img, False, True)
         self.bottom_pipe = self.img
         self.height = self.set_height()
-        self.gap_height = 200
+        self.gap_height = GAP_HEIGHT
         self.pipe_height = self.bottom_pipe.get_height()
         self.pipe_width = self.bottom_pipe.get_width()
         self.top_height = self.height - self.top_pipe.get_height() - self.gap_height
@@ -18,7 +18,7 @@ class Pipe:
         self.cleared = False
 
     def set_height(self):
-        height = random.randint(175, 625)
+        height = random.randint(250, 550)
         # height = 600
         return height
 
