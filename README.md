@@ -9,12 +9,12 @@ This works by the principle of natural selection. selective breeding of neural n
 
 Given two genomes, with the following gene sets
 
-!()[https://res.cloudinary.com/practicaldev/image/fetch/s--A6H_pBdv--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vdbrhqofvcyiasuijjth.png]
+![](https://res.cloudinary.com/practicaldev/image/fetch/s--A6H_pBdv--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vdbrhqofvcyiasuijjth.png)
 
 
 the offspring of the genomes can be a cross-over between the genomes, resulting in the following gene set.
 
-!()[https://res.cloudinary.com/practicaldev/image/fetch/s--bMf3gTCi--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fj74k8fjf1098mv2pe0a.png]
+![](https://res.cloudinary.com/practicaldev/image/fetch/s--bMf3gTCi--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fj74k8fjf1098mv2pe0a.png)
 
 This environment can be controlled with various settings, found in the `settings.py` file
 
